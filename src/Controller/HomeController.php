@@ -13,4 +13,12 @@ class HomeController extends AbstractController
     {
        die("hola");
     }
+
+    #[Route('/home/saludo', name: 'home_inicio2')]
+    public function saludo(): Response
+    {
+       die("hola soy tu saludo");
+    }
+    
 }
+
