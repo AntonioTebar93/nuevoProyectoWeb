@@ -12,7 +12,7 @@ class TemplateController extends AbstractController
     #[Route('/template', name: 'template_inicio')]
     public function index(): Response
     {
-        die("Controlador de template");
+        return $this->render('template/index.html.twig');
     }
 
     #[Route('/template/parametros/{id}/{slug}', name: 'template_parametros', defaults:
@@ -33,6 +33,13 @@ class TemplateController extends AbstractController
     {
         //throw $this->createNotFoundException("Esta URL no está disponible");
         throw new NotFoundHttpException("Esta URL no está disponible con el otro");
+    }
+
+    #[Route('/template/trabajo', name: 'template_trabajo')]
+    public function trabajo(): Response
+    {
+        //interpolación de variables 
+        return $this->render('template/trabajo.html.twig');
     }
 }
 
