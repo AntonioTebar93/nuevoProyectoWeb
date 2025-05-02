@@ -39,7 +39,20 @@ class TemplateController extends AbstractController
     public function trabajo(): Response
     {
         //interpolación de variables 
-        return $this->render('template/trabajo.html.twig');
+        $nombre = "Antonio";
+        $apellidos = "Tebar Alfaro";
+
+        $paises = [
+            ['nombre'=>'España', 'id' => 1],
+            ['nombre'=>'Francia', 'id' => 2],
+            ['nombre'=>'Alemania', 'id' => 3],
+            ['nombre'=>'Italia', 'id' => 4],
+            ['nombre'=>'Portugal', 'id' => 5]
+
+        ];
+       
+
+       return $this->render('template/trabajo.html.twig', ['nombre' =>$nombre, 'apellidos' => $apellidos, 'paises' =>$paises]);
     }
 }
 

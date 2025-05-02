@@ -1,1 +1,19 @@
-<h1>Hola</h1>
+
+{% set edad = 31%}
+
+<h1>Hola {{nombre}} {{apellidos}} {{edad}} </h1>
+
+<h1>{{dump(paises)}}</h1>
+
+{% if edad > 18%}
+ <h1>es mayor de edad</h1>
+{% endif %}
+
+<ul>
+    {% for pais in paises%}
+    <li>
+     Nombre País: {{pais.nombre}}
+     ID: {{pais.id}}
+    </li>
+    {% endfor %}
+</ul>
