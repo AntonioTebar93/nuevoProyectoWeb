@@ -1,0 +1,30 @@
+{% extends "frontend.html.twig" %}
+
+{% block title %} Formularios {% endblock %}
+
+{% block body %} 
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="{{path('home_inicio')}}">Home</a></li>
+      <li class="breadcrumb-item"><a href="{{path('formularios_inicio')}}">Formularios</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Formulario Simple2</li>
+    </ol>
+  </nav>
+  
+
+<h1>Formulario Simple2</h1>
+
+<form method="POST" action="{{url('formularios_simple2')}}">
+
+    <div class="form-group">
+        <label for="form_nombre">
+            Nombre: 
+            {{form_widget(form.nombre, {'attr':{"placeholder": "Nombre...."}})}}
+        </label>
+    </div>
+
+    <input type="hidden" name="token" value="{{csrf_token('generico')}}">
+    <button type="submit" class="btn btn-primary" title="Enviar">Enviar</button>
+
+</form>
+{% endblock %}

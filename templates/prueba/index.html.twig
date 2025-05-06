@@ -5,5 +5,13 @@
         <li>email: {{usuario.email}}</li>
         <br>
     {% endfor %}
+
+    {{include ("ejemplo.html.twig") }}
+{% set html = '<h1>Hola como estamos?</h1>' %}
+{{html|raw}}
+
+{{tamila}}
+
     
 </ul>
+

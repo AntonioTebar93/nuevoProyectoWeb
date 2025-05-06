@@ -54,5 +54,14 @@ class TemplateController extends AbstractController
 
        return $this->render('template/trabajo.html.twig', ['nombre' =>$nombre, 'apellidos' => $apellidos, 'paises' =>$paises]);
     }
+
+    #[Route('/template/layout', name: 'template_layout')]
+    public function layout(): Response
+    {
+        return $this->render('template/layout.html.twig');
+    }
+
+
+
 }
 
