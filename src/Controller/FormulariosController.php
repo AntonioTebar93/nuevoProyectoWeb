@@ -4,7 +4,10 @@ namespace App\Controller;
 
 use App\Entity\Persona;
 use App\Entity\PersonaEntity;
+use App\Entity\PersonaValidation;
 use App\Form\PersonaEntityForm;
+use App\Form\PersonaValidationForm;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Response;
@@ -169,6 +172,42 @@ public function simple(Request $request): Response
         }
 
         return $this->render('formularios/typeForm.html.twig', ['form' => $form]);
+    }
+
+    #[Route('/formularios/validation', name: 'formularios_validation')]
+    public function validation(Request $request, ValidatorInterface $validator): Response
+    {
+        $validacion = new PersonaValidation();
+        $form = $this->createForm(PersonaValidationForm::class, $validacion);
+        $submittedToken = $request->request->get('token');
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted()) {
+            if ($this->isCsrfTokenValid('generico', $submittedToken)) {
+                $errors = $validator->validate($validacion);
+                if(count($errors) > 0) {
+                    $this->addFlash('css', 'danger');
+                    $this->addFlash('mensaje', 'Error en el formulario');
+                    foreach ($errors as $error) {
+                        $this->addFlash('mensaje', $error->getMessage());
+                    }
+                    return $this->redirectToRoute('formularios_validation');
+                }else{
+                    $campos = $form->getData();
+                    $validacion->setNombre($campos->getNombre());
+                    $validacion->setCorreo($campos->getCorreo());
+                    $validacion->setTelefono($campos->getTelefono());
+                    $validacion->setPais($campos->getPais());
+
+                    die($validacion->getNombre()."\n".$validacion->getCorreo()."\n".$validacion->getTelefono()."\n".$validacion->getPais());
+                }  
+            }else{
+                $this->addFlash('css', 'warning');
+                $this->addFlash('mensaje', 'Error en el token');
+                return $this->redirectToRoute('formularios_validation');
+            }
+
+        return $this->render('formularios/validation.html.twig', ['form' => $form]);
     }
 
 

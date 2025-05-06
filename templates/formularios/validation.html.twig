@@ -1,0 +1,41 @@
+{% extends "frontend.html.twig" %}
+
+{% block title %} Formularios {% endblock %}
+
+{% block body %} 
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="{{path('home_inicio')}}">Home</a></li>
+      <li class="breadcrumb-item"><a href="{{path('formularios_inicio')}}">Formularios</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Formulario Validation</li>
+    </ol>
+  </nav>
+  
+
+  <h1>Formulario Validation</h1>
+  {% for message in app.flashes('mensaje') %}
+  <div class="alert alert-{{ app.flashes('css')[0] }} alert-dismissible fade show" role="alert">
+      {{message}}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  {% endfor %}
+  <form method="POST" action="{{url('formularios_validation')}}">
+  
+      <div class="form-group">
+          <label for="form_nombre">Nombre: </label>
+          {{ form_widget(form.nombre, {'attr': {'placeholder': 'Nombre....'}}) }}
+      </div>
+    
+      <div class="form-group">
+          <label for="form_email">Email: </label>
+          {{ form_widget(form.correo, {'attr': {'placeholder': 'Email....'}}) }}
+      </div>
+      <div class="form-group">
+          <label for="form_telefono">Telefono: </label>
+          {{ form_widget(form.telefono, {'attr': {'placeholder': 'Telefono....'}}) }}
+      </div>
+<hr>
+<input type="hidden" name="token" value="{{csrf_token('generico')}}">
+<button type="submit" title="Enviar" class="btn btn-primary">Enviar</button>
+</form>
+{% endblock %}
