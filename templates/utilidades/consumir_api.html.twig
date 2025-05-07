@@ -1,0 +1,41 @@
+{% extends "frontend.html.twig" %}
+
+{% block title %} API REST {% endblock %}
+
+{% block body %} 
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="{{path('home_inicio')}}">Home</a></li>
+      <li class="breadcrumb-item"><a href="{{path('utilidades_inicio')}}">Utilidades</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Consumir API</li>
+    </ol>
+  </nav>
+  
+
+  <h1>Consumir API</h1>
+<p class="d-flex justify-content-end">
+  <a href="{{path('utilidades_metodo_post')}}" class="btn btn-success">
+    <i class="fas fa-check"></i>
+    Crear
+  </a>
+</p>
+<div class="table-responsive">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for dato in response.toArray %}
+                <tr>
+                    <td>{{dato.id}}</td>
+                    <td>{{dato.nombre}}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

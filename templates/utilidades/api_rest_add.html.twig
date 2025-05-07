@@ -1,0 +1,30 @@
+{% extends "frontend.html.twig" %}
+
+{% block title %} API REST {% endblock %}
+
+{% block body %} 
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="{{path('home_inicio')}}">Home</a></li>
+      <li class="breadcrumb-item"><a href="{{path('utilidades_inicio')}}">Utilidades</a></li>
+      <li class="breadcrumb-item"><a href="{{path('utilidades_consumir_api')}}">Consumir API REST</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Crear</li>
+    </ol>
+  </nav>
+
+  <h1>Crear</h1>
+
+{% for message in app.flashes('success') %}
+{% if app.request.get('creado') %}
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+  La categoría se ha creado correctamente.
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% endif %}
+{% endfor %}
+
+{{ form_start(form) }}
+  {{ form_row(form.categoria) }}
+  <button type="submit" class="btn btn-primary">Enviar</button>
+{{ form_end(form) }}
+{% endblock %}
