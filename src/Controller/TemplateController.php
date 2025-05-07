@@ -12,7 +12,7 @@ class TemplateController extends AbstractController
     #[Route('/template', name: 'template_inicio')]
     public function index(): Response
     {
-        return $this->render('template/index.html.twig');
+        return $this->render('frontend.html.twig');
     }
 
     #[Route('/template/parametros/{id}/{slug}', name: 'template_parametros', defaults:

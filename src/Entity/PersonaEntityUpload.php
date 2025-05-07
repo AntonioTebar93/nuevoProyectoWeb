@@ -2,18 +2,16 @@
 
 namespace App\Entity;
 
-use App\Repository\PersonaValidationRepository;
+use App\Repository\PersonaEntityUploadRepository;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: PersonaValidationRepository::class)]
-class PersonaValidation
+#[ORM\Entity(repositoryClass: PersonaEntityUploadRepository::class)]
+class PersonaEntityUpload
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    
-
     private ?int $id = null;
 
     #[Assert\NotBlank(message: 'El nombre no puede estar vacío')]
@@ -36,6 +34,19 @@ class PersonaValidation
     #[Assert\NotBlank(message: 'El país no puede estar vacío')]
     #[ORM\Column(length: 100)]
     private ?string $pais = null;
+
+    #[Assert\NotNull(message: 'Debes subir una imagen.')]
+    #[Assert\File(
+        maxSize: "10M",
+        mimeTypes: [
+            'image/jpeg',
+            'image/png',
+            'image/gif',
+        ],
+        mimeTypesMessage: 'Por favor, sube una imagen válida (JPEG, PNG o GIF).',
+        maxSizeMessage: 'El tamaño máximo permitido es de 10 MB.'
+    )]
+    protected $foto;
 
     public function getId(): ?int
     {
@@ -86,6 +97,17 @@ class PersonaValidation
     public function setPais(string $pais): static
     {
         $this->pais = $pais;
+
+        return $this;
+    }
+
+    public function getFoto()
+    {
+        return $this->foto;
+    }
+    public function setFoto($foto): static
+    {
+        $this->foto = $foto;
 
         return $this;
     }

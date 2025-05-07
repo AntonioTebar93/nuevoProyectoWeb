@@ -5,8 +5,10 @@ namespace App\Controller;
 use App\Entity\Persona;
 use App\Entity\PersonaEntity;
 use App\Entity\PersonaValidation;
+use App\Entity\PersonaEntityUpload;
 use App\Form\PersonaEntityForm;
 use App\Form\PersonaValidationForm;
+use App\Form\PersonaEntityUploadForm;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -14,6 +16,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
+
 
 final class FormulariosController extends AbstractController
 {
@@ -185,14 +189,12 @@ public function simple(Request $request): Response
         if ($form->isSubmitted()) {
             if ($this->isCsrfTokenValid('generico', $submittedToken)) {
                 $errors = $validator->validate($validacion);
-                if(count($errors) > 0) {
-                    $this->addFlash('css', 'danger');
-                    $this->addFlash('mensaje', 'Error en el formulario');
-                    foreach ($errors as $error) {
-                        $this->addFlash('mensaje', $error->getMessage());
-                    }
-                    return $this->redirectToRoute('formularios_validation');
-                }else{
+                if (count($errors) > 0) {
+                    return $this->render('formularios/validation.html.twig', [
+                        'form' => $form,
+                        'errors' => $errors
+                    ]);
+                } else {
                     $campos = $form->getData();
                     $validacion->setNombre($campos->getNombre());
                     $validacion->setCorreo($campos->getCorreo());
@@ -200,17 +202,73 @@ public function simple(Request $request): Response
                     $validacion->setPais($campos->getPais());
 
                     die($validacion->getNombre()."\n".$validacion->getCorreo()."\n".$validacion->getTelefono()."\n".$validacion->getPais());
-                }  
-            }else{
+                }
+            } else {
                 $this->addFlash('css', 'warning');
                 $this->addFlash('mensaje', 'Error en el token');
                 return $this->redirectToRoute('formularios_validation');
             }
+        }
 
-        return $this->render('formularios/validation.html.twig', ['form' => $form]);
+       
+        return $this->render('formularios/validation.html.twig', [
+            'form' => $form,
+            'errors' => []
+        ]);
+    }
+
+    #[Route('/formularios/upload', name: 'formularios_upload')]
+    public function upload(Request $request, ValidatorInterface $validator): Response
+    {
+        $upload = new PersonaEntityUpload();
+        $form = $this->createForm(PersonaEntityUploadForm::class, $upload);
+        $submittedToken = $request->request->get('token');
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted()) {
+            if ($this->isCsrfTokenValid('generico', $submittedToken)) {
+                $errors = $validator->validate($upload);
+                if (count($errors) > 0) {
+                    return $this->render('formularios/upload.html.twig', [
+                        'form' => $form,
+                        'errors' => $errors
+                    ]);
+                } else {
+                    $foto = $form->get('foto')->getData();
+                    if($foto){
+                      $originalName = pathinfo($foto->getClientOriginalName(), PATHINFO_FILENAME);  
+                      $newFileName = time().'.'.$foto->guessExtension();
+                      try {
+                        $foto->move($this->getParameter('fotos_directory'),$newFileName);
+                      } catch (FileException $e) {
+                        throw new \Exception('Error al subir el archivo');
+                      }
+                    }
+                    $campos = $form->getData();
+                    $upload->setNombre($campos->getNombre());
+                    $upload->setCorreo($campos->getCorreo());
+                    $upload->setTelefono($campos->getTelefono());
+                    $upload->setPais($campos->getPais());
+                    $upload->setFoto($newFileName);
+
+                  die($upload->getNombre()."\n".$upload->getCorreo()."\n".$upload->getTelefono()."\n".$upload->getPais()."\n".$upload->getFoto());
+                }
+            } else {
+                $this->addFlash('css', 'warning');
+                $this->addFlash('mensaje', 'Error en el token');
+                return $this->redirectToRoute('formularios_upload');
+            }
+        }
+
+        return $this->render('formularios/upload.html.twig', [
+            'form' => $form,
+            'errors' => []
+        ]);
     }
 
 
-
 }
+
+
+
 

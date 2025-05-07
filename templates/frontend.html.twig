@@ -89,24 +89,17 @@
 
     <!-- Navbar -->
     <nav class="nav justify-content-center py-3 border-bottom">
-      <a class="nav-link active" href="#">Red</a>
-      <a class="nav-link" href="#">IA</a>
-      <a class="nav-link" href="#">Tecnología</a>
-      <a class="nav-link" href="#">Diseño</a>
-      <a class="nav-link" href="#">Cultura</a>
-      <a class="nav-link" href="#">Corporativo</a>
-      <a class="nav-link" href="#">Política</a>
-      <a class="nav-link" href="#">Opinión</a>
-      <a class="nav-link" href="#">Ciencia</a>
-      <a class="nav-link" href="#">Salud</a>
-      <a class="nav-link" href="#">Estilo</a>
-      <a class="nav-link" href="#">Viajes</a>
+      <a class="nav-link active" href="{{path('template_inicio')}}">Inicio</a>
+      <a class="nav-link" href="{{path('formularios_inicio')}}">Formularios</a>
+      <a class="nav-link" href="{{path('utilidades_inicio')}}">Utilidades</a>
+      <a class="nav-link" href="{{path('formularios_inicio')}}">Doctrine ORM</a>
+     
     </nav>
 
     <!-- Main content -->
     <main class="mt-4">
       {% block body %}
-      <a href="{{path('formularios_inicio')}}">Acceso a Formularios</a>
+   
       {% endblock %}
     </main>
   </div>

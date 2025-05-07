@@ -7,12 +7,12 @@
     <ol class="breadcrumb">
       <li class="breadcrumb-item"><a href="{{path('home_inicio')}}">Home</a></li>
       <li class="breadcrumb-item"><a href="{{path('formularios_inicio')}}">Formularios</a></li>
-      <li class="breadcrumb-item active" aria-current="page">Formulario Validation</li>
+      <li class="breadcrumb-item active" aria-current="page">Formulario upload</li>
     </ol>
   </nav>
   
 
-  <h1>Formulario Validation</h1>
+  <h1>Formulario upload</h1>
   {% if errors %}
   <div class="cyber-alert alert alert-danger alert-dismissible fade show p-3 mb-4 border border-info" role="alert" style="background-color: #1a1a2e; color: #ff00f7; box-shadow: 0 0 10px #ff00f7;">
     <h5 class="mb-2">⚠️ Validación fallida</h5>
@@ -31,7 +31,7 @@
       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
   {% endfor %}
-  <form method="POST" action="{{url('formularios_validation')}}" novalidate>
+  <form method="POST" action="{{url('formularios_upload')}}" novalidate  enctype="multipart/form-data">
   
       <div class="form-group">
           <label for="form_nombre">Nombre: </label>
@@ -48,9 +48,14 @@
       </div>
 
       <div class="form-group">
-        <label for="form_telefono">Pais: </label>
+        <label for="form_pais">Pais: </label>
         {{ form_widget(form.pais, {'attr': {'placeholder': 'Telefono....'}}) }}
     </div>
+
+    <div class="form-group">
+      <label for="form_foto">Foto: </label>
+      {{ form_widget(form.foto, {'attr': {'placeholder': 'foto...'}}) }}
+  </div>
 <hr>
 <input type="hidden" name="token" value="{{csrf_token('generico')}}">
 <button type="submit" title="Enviar" class="btn btn-primary">Enviar</button>
